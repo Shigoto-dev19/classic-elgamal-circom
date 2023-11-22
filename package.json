@@ -6,11 +6,17 @@
   "scripts": {
     "test": "npm test"
   },
-  "keywords": ["ElGamal Scheme", "ZKP", "Circom2"],
+  "keywords": [
+    "ElGamal Scheme",
+    "ZKP",
+    "Circom2"
+  ],
   "author": "Shigoto-dev19",
   "license": "ISC",
   "dependencies": {
     "circom_tester": "^0.0.20",
-    "circomlib": "^2.0.5"
+    "circomlib": "^2.0.5",
+    "ffjavascript": "^0.2.62",
+    "maci-crypto": "1.1.1"
   }
 }
