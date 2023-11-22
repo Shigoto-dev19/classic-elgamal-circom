@@ -1,0 +1,16 @@
+{
+  "name": "classic_elgamal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "keywords": ["ElGamal Scheme", "ZKP", "Circom2"],
+  "author": "Shigoto-dev19",
+  "license": "ISC",
+  "dependencies": {
+    "circom_tester": "^0.0.20",
+    "circomlib": "^2.0.5"
+  }
+}
