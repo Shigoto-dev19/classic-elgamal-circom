@@ -22,14 +22,14 @@ function encrypt(secret: BigInt, publicKey: BigInt) {
     const nonce = generateRandomFieldElement();
 
     const encodedSecret: BigInt = F.pow(BASE, secret);
-    console.log("Encoded Secret:    ", encodedSecret);
+    // console.log("Encoded Secret:    ", encodedSecret);
 
     const ephemeralKey: BigInt = F.pow(BASE, nonce);
     const maskingKey: BigInt = F.pow(publicKey, nonce);
     // console.log('MaskingKey:        ', maskingKey);
 
     const encryptedMessage: BigInt = F.mul(encodedSecret, maskingKey);
-    console.log("encrypted Message: ", encryptedMessage);
+    // console.log("encrypted Message: ", encryptedMessage);
 
     return { ephemeralKey, encryptedMessage };
 }
@@ -38,13 +38,8 @@ function decrypt(privateKey: BigInt, ephemeralKey: BigInt, encryptedMessage: Big
     const maskingKey: BigInt = F.pow(ephemeralKey, privateKey);
     const decryptedMessage: BigInt = F.div(encryptedMessage, maskingKey);
     // console.log('MaskingKey:        ', maskingKey);
-    console.log("decrypted Message: ", decryptedMessage);
+    // console.log("decrypted Message: ", decryptedMessage);
+    return decryptedMessage;
 }
 
-const keypair = generateKeypair();
-const secret = generateRandomFieldElement();
-
-const res = encrypt(secret, keypair.publicKey);
-decrypt(keypair.privateKey, res.ephemeralKey, res.encryptedMessage);
-
-export { encrypt, decrypt, generateKeypair, generateRandomFieldElement };
+export { encrypt, decrypt, generateKeypair, generateRandomFieldElement, F, BASE };
