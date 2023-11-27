@@ -18,9 +18,7 @@ function generateKeypair() {
     return { privateKey, publicKey };
 }
 
-function encrypt(secret: BigInt, publicKey: BigInt) {
-    const nonce = generateRandomFieldElement();
-
+function encrypt(secret: BigInt, publicKey: BigInt, nonce = generateRandomFieldElement()) {
     const encodedSecret: BigInt = F.pow(BASE, secret);
     // console.log("Encoded Secret:    ", encodedSecret);
 

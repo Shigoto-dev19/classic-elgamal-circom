@@ -25,6 +25,7 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.0",
     "chai": "^4.3.10",
+    "chai-as-promised": "^7.1.1",
     "circom_tester": "^0.0.20",
     "mocha": "^10.2.0",
     "prettier": "^3.1.0",

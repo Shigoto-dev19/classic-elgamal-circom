@@ -18,7 +18,6 @@ template Encrypt_Classic() {
     pow[0].base <== 2;
     pow[0].exponent <== secret;
     signal encodedSecret <== pow[0].out;
-    log("encodedSecret: ", encodedSecret);
 
     // compute the ephemeral key: ephemeralKey = 2**nonce
     pow[1].base <== 2;
@@ -34,4 +33,4 @@ template Encrypt_Classic() {
     encryptedMessage <== encodedSecret * maskingKey;
 }
 
- //component main { public [ publicKey ] } = Encrypt_Classic();
+component main { public [ publicKey ] } = Encrypt_Classic();
