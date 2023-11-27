@@ -1,10 +1,10 @@
 import { encrypt, decrypt, generateKeypair, generateRandomFieldElement, F, BASE } from "../src";
-import { assert } from 'chai';
+import { assert } from "chai";
 const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised");
 // Load chai-as-promised support
 chai.use(chaiAsPromised);
-const wasm_tester = require('circom_tester').wasm;
+const wasm_tester = require("circom_tester").wasm;
 const ff = require("ffjavascript");
 
 const stringifyBigInts: (obj: object) => any = ff.utils.stringifyBigInts;
@@ -57,7 +57,7 @@ function encodeSecret(secret: BigInt) {
 function generateCircuitInputs(
     keypair: Keypair,
     secret: BigInt,
-    nonce = generateRandomFieldElement() 
+    nonce = generateRandomFieldElement(),
 ): {
     input_encrypt: EncryptCircuitInputs;
     ephemeralKey: string;
@@ -141,7 +141,10 @@ describe("Testing ElGamal Scheme Circuits\n", () => {
             for (let i = 0; i < 100; i++) {
                 keypair = generateKeypair();
                 secret = generateRandomFieldElement();
-                let { input_encrypt, ephemeralKey, encryptedMessage } = generateCircuitInputs(keypair, secret);
+                let { input_encrypt, ephemeralKey, encryptedMessage } = generateCircuitInputs(
+                    keypair,
+                    secret,
+                );
                 let encrypt_witness = await encryptCircuit.calculateWitness(input_encrypt, true);
 
                 await encryptCircuit.assertOut(encrypt_witness, { ephemeralKey: ephemeralKey });
@@ -182,7 +185,9 @@ describe("Testing ElGamal Scheme Circuits\n", () => {
 
         it("Happy: Verify compliant decrypt output", async () => {
             // Verify compliant decryption output of the decrypted message
-            await decryptCircuit.assertOut(decrypt_witness, { decryptedMessage: encodeSecret(secret) });
+            await decryptCircuit.assertOut(decrypt_witness, {
+                decryptedMessage: encodeSecret(secret),
+            });
             // Verify compliant decryption input for the encrypted message
             await decryptCircuit.assertOut(decrypt_witness, {
                 encryptedMessage: encryptedMessage,
@@ -195,7 +200,9 @@ describe("Testing ElGamal Scheme Circuits\n", () => {
             const decrypt_witness = await decryptCircuit.calculateWitness(input_decrypt, true);
 
             await assert.isRejected(
-                decryptCircuit.assertOut(decrypt_witness, { decryptedMessage: encodeSecret(secret) }),
+                decryptCircuit.assertOut(decrypt_witness, {
+                    decryptedMessage: encodeSecret(secret),
+                }),
             );
         });
 
@@ -217,7 +224,9 @@ describe("Testing ElGamal Scheme Circuits\n", () => {
 
                 const decrypt_witness = await decryptCircuit.calculateWitness(input_decrypt, true);
 
-                await decryptCircuit.assertOut(decrypt_witness, { decryptedMessage: encodeSecret(secret) });
+                await decryptCircuit.assertOut(decrypt_witness, {
+                    decryptedMessage: encodeSecret(secret),
+                });
                 await decryptCircuit.assertOut(decrypt_witness, {
                     encryptedMessage: encryptedMessage,
                 });
@@ -247,17 +256,21 @@ describe("Testing ElGamal Scheme Circuits\n", () => {
 
         it("Happy: Verify the message input is the same as decrypted message", async () => {
             const input_decrypt: DecryptCircuitInputs = stringifyBigInts({
-                encryptedMessage:
-                    getSignalByName(encryptCircuit, encrypt_witness, "encryptedMessage"),
-    
-                ephemeralKey: 
-                    getSignalByName(encryptCircuit, encrypt_witness, "ephemeralKey"),
-    
+                encryptedMessage: getSignalByName(
+                    encryptCircuit,
+                    encrypt_witness,
+                    "encryptedMessage",
+                ),
+
+                ephemeralKey: getSignalByName(encryptCircuit, encrypt_witness, "ephemeralKey"),
+
                 privateKey: keypair.privateKey,
             });
 
             const decrypt_witness = await decryptCircuit.calculateWitness(input_decrypt, true);
-            await decryptCircuit.assertOut(decrypt_witness, { decryptedMessage: encodeSecret(secret) });
+            await decryptCircuit.assertOut(decrypt_witness, {
+                decryptedMessage: encodeSecret(secret),
+            });
         });
 
         it("Happy: Looped Verify the circuits' compliance given random inputs", async () => {
@@ -274,23 +287,27 @@ describe("Testing ElGamal Scheme Circuits\n", () => {
 
                 // The input of the decrypt circuit is given by the output of the encrypt circuit
                 const input_decrypt: DecryptCircuitInputs = {
-                    encryptedMessage:
-                        getSignalByName(encryptCircuit, encrypt_witness, "encryptedMessage"),
-        
-                    ephemeralKey: 
-                        getSignalByName(encryptCircuit, encrypt_witness, "ephemeralKey"),
-        
+                    encryptedMessage: getSignalByName(
+                        encryptCircuit,
+                        encrypt_witness,
+                        "encryptedMessage",
+                    ),
+
+                    ephemeralKey: getSignalByName(encryptCircuit, encrypt_witness, "ephemeralKey"),
+
                     privateKey: keypair.privateKey.toString(),
                 };
 
                 const decrypt_witness = await loadCircuit(decryptCircuit, input_decrypt, true);
-                await decryptCircuit.assertOut(decrypt_witness, { decryptedMessage: encodeSecret(secret) });
+                await decryptCircuit.assertOut(decrypt_witness, {
+                    decryptedMessage: encodeSecret(secret),
+                });
             }
         });
 
         it("Unhappy: Verify the ElGamal homomorphic property of two random messages", async () => {
             const keypair = generateKeypair();
-            
+
             const secret1 = generateRandomFieldElement();
             const nonce1 = generateRandomFieldElement();
             const encryption1 = generateCircuitInputs(keypair, secret1, nonce1);
@@ -302,7 +319,7 @@ describe("Testing ElGamal Scheme Circuits\n", () => {
             const encryption2 = generateCircuitInputs(keypair, secret2, nonce2);
             const input_encrypt2 = encryption2.input_encrypt;
             const encrypt2_witness = await loadCircuit(encryptCircuit, input_encrypt2, true);
-            
+
             // Take the first encrypted message from the circuit output
             const encryptedMessage1 = F.e(
                 getSignalByName(encryptCircuit, encrypt1_witness, "encryptedMessage"),
@@ -318,14 +335,14 @@ describe("Testing ElGamal Scheme Circuits\n", () => {
             // Proving message is equal to the decrypted(encryptedMessage3) => will prove the additive homomorphic property
             const secret3 = F.add(secret1, secret2);
             const nonce3 = F.add(nonce1, nonce2);
-            const encryption3 = generateCircuitInputs(keypair, secret3, nonce3)
+            const encryption3 = generateCircuitInputs(keypair, secret3, nonce3);
             const input_encrypt3 = encryption3.input_encrypt;
             const encrypt3_witness = await loadCircuit(encryptCircuit, input_encrypt3, true);
-            
+
             await assert.isRejected(
                 encryptCircuit.assertOut(encrypt3_witness, {
                     encryptedMessage: encryptedMessage3,
-                })
+                }),
             );
         });
     });

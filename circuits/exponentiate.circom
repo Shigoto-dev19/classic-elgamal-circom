@@ -2,7 +2,7 @@ pragma circom 2.1.5;
 
 include "../node_modules/circomlib/circuits/bitify.circom";
 
-template Exponentiate () {
+template Exponentiate() {
     signal input base;
     signal input exponent;
     signal output out;

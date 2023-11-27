@@ -6,7 +6,9 @@
   "scripts": {
     "test": "ts-mocha --timeout 500000 ./tests/*.test.ts --exit",
     "format": "prettier --write \"src/**/*.{ts,js}\" \"tests/**/*.{ts,js}\" -w",
-    "lint": "prettier \"src/**/*{ts,js}\" \"tests/**/*.{ts,js}\" --check"
+    "lint": "prettier \"src/**/*{ts,js}\" \"tests/**/*.{ts,js}\" --check",
+    "encrypt_circuit_constraints": "snarkjs ri ./circuits/r1cs/classic_encrypt.r1cs",
+    "decrypt_circuit_constraints": "snarkjs ri ./circuits/r1cs/classic_decrypt.r1cs"
   },
   "keywords": [
     "ElGamal Scheme",
