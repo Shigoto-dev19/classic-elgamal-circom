@@ -8,7 +8,8 @@
     "format": "prettier --write \"src/**/*.{ts,js}\" \"tests/**/*.{ts,js}\" -w",
     "lint": "prettier \"src/**/*{ts,js}\" \"tests/**/*.{ts,js}\" --check",
     "encrypt_circuit_constraints": "snarkjs ri ./circuits/r1cs/classic_encrypt.r1cs",
-    "decrypt_circuit_constraints": "snarkjs ri ./circuits/r1cs/classic_decrypt.r1cs"
+    "decrypt_circuit_constraints": "snarkjs ri ./circuits/r1cs/classic_decrypt.r1cs",
+    "benchmark": "npm run encrypt_circuit_constraints && npm run decrypt_circuit_constraints"
   },
   "keywords": [
     "ElGamal Scheme",

@@ -14,12 +14,12 @@ template Encrypt_Classic() {
     component pow[3];
     for (var i=0; i<3; i++) pow[i] = Exponentiate();
     
-    // encode message: encodedSecret = 2**secret
+    // encode message: encodedSecret = base**secret
     pow[0].base <== 2;
     pow[0].exponent <== secret;
     signal encodedSecret <== pow[0].out;
 
-    // compute the ephemeral key: ephemeralKey = 2**nonce
+    // compute the ephemeral key: ephemeralKey = base**nonce
     pow[1].base <== 2;
     pow[1].exponent <== nonce;
     ephemeralKey <== pow[1].out;
